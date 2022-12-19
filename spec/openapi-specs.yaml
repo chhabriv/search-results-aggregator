@@ -7,6 +7,7 @@ info:
     - https://raw.githubusercontent.com/assignment132/assignment/main/duckduckgo.json
     - https://raw.githubusercontent.com/assignment132/assignment/main/google.json
     - https://raw.githubusercontent.com/assignment132/assignment/main/wikipedia.json
+    
     The Server should also limit the number of items in the API response to input parameter “limit”.
   contact:
     email: chhabriv@tcd.ie
@@ -40,7 +41,7 @@ paths:
       tags:
         - links
       description: |
-        Get aggregated search links, sorted based on sortKey and the number of results limited
+        Returns the aggregated search links, sorted based on sortKey and the number of results limited
         by the limit parameter.
       operationId: getAggregatedSearchLinks
       parameters:
