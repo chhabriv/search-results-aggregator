@@ -12,4 +12,19 @@
 *.out
 
 # Dependency directories (remove the comment below to include it)
-# vendor/
+vendor/
+
+# Mac
+.DS_Store
+
+# Application specific ignores
+*.log
+
+# Ignore `go build` artifact
+search-results-aggregator
+
+# idea
+/.idea
+
+# vscode
+.vscode
