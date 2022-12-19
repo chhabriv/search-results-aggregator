@@ -1,0 +1,157 @@
+openapi: 3.0.0
+info:
+  title: Search Results Aggregator
+  description: |-
+    This is a HTTP server which accepts GET requests with input parameter as “sortKey” and “limit”. 
+    The service queries three URLs mentioned below, combines the results from all three URLs, sorts them by the sortKey and returns the response. 
+    - https://raw.githubusercontent.com/assignment132/assignment/main/duckduckgo.json
+    - https://raw.githubusercontent.com/assignment132/assignment/main/google.json
+    - https://raw.githubusercontent.com/assignment132/assignment/main/wikipedia.json
+    The Server should also limit the number of items in the API response to input parameter “limit”.
+  contact:
+    email: chhabriv@tcd.ie
+  version: 1.0.0
+servers:
+  - url: https://localhost:8080
+tags:
+  - name: actuators
+    description: Definition for actuator endpoints
+  - name: links
+    description: API to retrieve aggregated search results
+paths:
+  /health:
+    get:
+      tags:
+        - actuators
+      description: |
+        Returns the health of the service. 
+        A simple API that can be used to know whether the service is functional.
+        Suggested to be used in K8 readiness and liveliness probes.
+      operationId: getHealthStatus
+      responses:
+        '200':
+          description: Healthy Status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthStatus'
+  /links:
+    get:
+      tags:
+        - links
+      description: |
+        Get aggregated search links, sorted based on sortKey and the number of results limited
+        by the limit parameter.
+      operationId: getAggregatedSearchLinks
+      parameters:
+        - name: sortKey
+          in: query
+          description: Sorts result based on the sortKey value
+          required: true
+          schema:
+            type: string
+            enum:
+              - relevanceScore
+              - views
+        - name: limit
+          in: query
+          description: The number of results to return in the response
+          required: true
+          schema:
+            type: integer
+            minimum: 2
+            maximum: 199
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetLinksResponse'          
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InvalidRequestError'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InternalError'
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      required: 
+        - status
+      properties:
+        status:
+          type: string
+          example: serving
+    GetLinksResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+        count:
+          type: number
+          example: 10
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+    Link:
+      type: object
+      properties:
+        url:
+          type: string
+          example: "www.wikipedia.com/abc4"
+        views:
+          type: integer
+          format: int32
+          example: 10
+        relavenceScore:
+          type: number
+          format: float
+          example: 0.4
+    InternalError:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+            - "ERR_PROVIDER_UNAVAILABLE"
+        message:
+          type: string
+          example: "provider google failed"
+    InvalidRequestError:
+        type: object
+        properties:
+          errors:
+            type: array
+            items:
+              $ref: '#/components/schemas/BadRequestError'
+    BadRequestError:
+        type: object
+        properties:
+          field:
+            type: string
+            example: "limit"
+          description:
+            type: string
+            example: "limit should be a number greater than 1 and less than 200"
