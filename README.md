@@ -4,6 +4,35 @@ The API documentation can be found as follows:
 - [API Specs](https://github.com/chhabriv/search-results-aggregator/blob/main/spec/openapi-specs.yaml)
 - [Human Friendly Documentation](https://chhabriv.github.io/search-results-aggregator/)
 
+#### Pre-requisites
+
+- Go 1.19.4
+- Docker 20.10.21
+
+##### To generate mocks for interface
+
+Note: the mocks are checked in, the pre-requisites need to be run if the interface is changed and mocks need to re-generated.
+
+1. Install mockgen
+
+```shell
+go install github.com/golang/mock/mockgen@v1.6.0
+go get github.com/golang/mock/mockgen/model
+```
+
+2. Generate mocks
+```shell
+go generate ./...
+```
+
+##### To generate human friendly page for coverage report
+
+Install go tool cover
+
+```shell
+go install golang.org/x/tools/cmd/cover@latest
+```
+
 ## Running local builds
 
 1. Start the search-results-aggregator service
@@ -29,34 +58,7 @@ You should see:
 
 ### Unit Tests
 
-#### Pre-requisites
-
-- Go 1.19.4
-- Docker 20.10.21
-
-##### To generate mocks for interface
-
-1. Install mockgen
-```shell
-go install github.com/golang/mock/mockgen@v1.6.0
-go get github.com/golang/mock/mockgen/model
-```
-
-2. Generate mocks
-```shell
-go generate ./...
-```
-
-Note: the mocks are checked in, the pre-requisites need to be run if the interface is changed and mocks need to re-generated.
-
-##### To generate html for coverage report
-
-1. Install go tool cover
-```shell
-go install golang.org/x/tools/cmd/cover@latest
-```
-
-#### Run Unit Tests
+To run unit tests:
 
 ```shell
 go test ./...
