@@ -1,7 +1,7 @@
 ## Overview
 
 This is a HTTP server which accepts GET requests with input parameter as “sortKey” and “limit”. 
-The service queries three URLs mentioned below, combines the results from all three URLs, sorts them by the sortKey sortKey (in descending order) and returns the response. 
+The service queries three URLs mentioned below, combines the results from all three URLs, sorts them by the sortKey (in descending order) and returns the response. 
 - https://raw.githubusercontent.com/assignment132/assignment/main/duckduckgo.json
 - https://raw.githubusercontent.com/assignment132/assignment/main/google.json
 - https://raw.githubusercontent.com/assignment132/assignment/main/wikipedia.json
