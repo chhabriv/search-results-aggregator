@@ -20,9 +20,6 @@ vendor/
 # Application specific ignores
 *.log
 
-# Ignore `go build` artifact
-search-results-aggregator
-
 # idea
 /.idea
 
