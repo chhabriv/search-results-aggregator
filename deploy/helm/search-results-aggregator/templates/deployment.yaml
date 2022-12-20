@@ -41,6 +41,8 @@ spec:
             path: /health
             port: {{ .Values.svc.targetPort }}
           initialDelaySeconds: 5
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       imagePullSecrets:
