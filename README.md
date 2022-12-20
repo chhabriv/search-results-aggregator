@@ -1,3 +1,22 @@
+## Overview
+
+This is a HTTP server which accepts GET requests with input parameter as “sortKey” and “limit”. 
+The service queries three URLs mentioned below, combines the results from all three URLs, sorts them by the sortKey and returns the response. 
+- https://raw.githubusercontent.com/assignment132/assignment/main/duckduckgo.json
+- https://raw.githubusercontent.com/assignment132/assignment/main/google.json
+- https://raw.githubusercontent.com/assignment132/assignment/main/wikipedia.json
+
+In the following cases, the service retries the external query to the aforementioned URLs(providers):
+- HTTP Timeout
+- HTTP Status Codes:
+    - 408 RequestTimeout
+    - 500 InternalServerError
+    - 502 BadGateway
+    - 503 ServiceUnavailable
+    - 504 GatewayTimeout
+
+The number of retries can be configured [here](https://github.com/chhabriv/search-results-aggregator/blob/main/serverconfig/http.go#L30)
+    
 ## API
 
 The API documentation can be found as follows:
@@ -72,7 +91,7 @@ go tool cover -html cov.out -o cover.html
 open cover.html
 ```
 
-## Running containerized builds
+## Running local containerized builds
 
 To run the service in a Docker container, do the following:
 
@@ -87,6 +106,10 @@ docker build . -t local/search-results-aggregator:latest
 ```shell
 docker run --rm -p 8080:8080 local/search-results-aggregator:latest
 ```
+
+## K8s Deployment
+
+[README](https://github.com/chhabriv/search-results-aggregator/tree/main/deploy/helm) with deployment information
 
 ## Sample cURL commands
 
