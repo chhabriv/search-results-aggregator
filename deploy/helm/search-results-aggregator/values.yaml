@@ -1,0 +1,30 @@
+name: search-results-aggregator
+replicas: 1
+
+labels:
+  type: backend
+
+namespace: assignment132
+
+image:
+  path: ghcr.io/chhabriv/search-results-aggregator
+  tag: latest
+  pullPolicy: Always
+
+env:
+  # skip gin debug logging
+  GIN_MODE: release
+
+containerPort: 8080
+
+svc:
+  port: 8080
+  targetPort: 8080
+  type: ClusterIP
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
