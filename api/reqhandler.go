@@ -26,6 +26,10 @@ func NewReqHandler(providerconnect providerconnect.ProviderService) ReqHandler {
 	}
 }
 
+// GetAggregatedSearchLinks provides the implementation to /links endpoint
+// which returns the aggregated search links from all the providers
+// in the order of the sortKey.
+// The number of results in the response are limited by the limit parameter.
 func (h reqHandler) GetAggregatedSearchLinks(ginCtx *gin.Context) {
 	log.Debug().Msg("GetAggregatedSearchLinks invoked")
 	ctx := ginCtx.Request.Context()

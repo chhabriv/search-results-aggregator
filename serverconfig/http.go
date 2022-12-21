@@ -30,10 +30,11 @@ const (
 	httpClientRetries = 1
 )
 
+// StartServer initilizes the dependencies and starts
+// http server.
 func StartServer(ctx context.Context) {
 	providerService := initProviderConnect()
 	reqHandler := api.NewReqHandler(providerService)
-	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 	setupRoutes(router, reqHandler)
 
@@ -50,7 +51,7 @@ func StartServer(ctx context.Context) {
 		}
 	}()
 
-	log.Info().Msg("Server started")
+	log.Info().Str("port", serverPort).Msg("Server started")
 
 	<-ctx.Done()
 
