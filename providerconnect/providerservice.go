@@ -37,6 +37,7 @@ func NewProviderService(httpTimeout time.Duration, providerUrlMap map[string]str
 	}
 }
 
+// QueryProviders queries all the providers concurrently and returns the results.
 func (ps providerService) QueryProviders(ctx context.Context) QueryProvidersResponse {
 	chOut := make(chan ProviderResponse)
 	var wg sync.WaitGroup
@@ -50,6 +51,7 @@ func (ps providerService) QueryProviders(ctx context.Context) QueryProvidersResp
 		wg.Wait()
 		close(chOut)
 	}()
+
 	return processProviderResponses(ctx, chOut)
 }
 

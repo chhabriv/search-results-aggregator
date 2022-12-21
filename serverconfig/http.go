@@ -30,6 +30,8 @@ const (
 	httpClientRetries = 1
 )
 
+// StartServer initilizes the dependencies and starts
+// http server.
 func StartServer(ctx context.Context) {
 	providerService := initProviderConnect()
 	reqHandler := api.NewReqHandler(providerService)
