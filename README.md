@@ -107,6 +107,36 @@ docker build . -t local/search-results-aggregator:latest
 docker run --rm -p 8080:8080 local/search-results-aggregator:latest
 ```
 
+## CI
+
+There are 3 github actions workflows setup on this repo:
+
+1. [go.yml](https://github.com/chhabriv/search-results-aggregator/blob/main/.github/workflows/go.yml) runs:
+    - [gosec](https://github.com/securego/gosec)
+    - [golangci-lint](https://github.com/golangci/golangci-lint)
+    - unit tests (go test ./...)
+
+    Runs on:
+    - `pull requests` to `main` branch
+    - `push` to `main` branch
+
+2. [generate-publish-api-doc.yml](https://github.com/chhabriv/search-results-aggregator/blob/main/.github/workflows/generate-publish-api-doc.yml)
+    - generates api documentation from the open api spec using [redoc-cli](https://github.com/Redocly/redoc/blob/main/cli/README.md)
+    - publishes the generated page to github pages
+
+    Runs on:
+    - `push` to `main` branch
+
+2. [docker-publish.yml](https://github.com/chhabriv/search-results-aggregator/blob/main/.github/workflows/docker-publish.yml)
+    - builds docker image using the [Dockerfile](https://github.com/chhabriv/search-results-aggregator/blob/main/Dockerfile) in the repo
+    - tags the built image with following tags:
+        - short commit sha of the respective commit
+        - `latest`
+    - publishes the image to the github container registry: ghcr.io/chhabriv
+
+    Runs on:
+    - `push` to `main` branch
+
 ## K8s Deployment
 
 [README](https://github.com/chhabriv/search-results-aggregator/tree/main/deploy/helm) with deployment information
